@@ -1,0 +1,294 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The Oh my Posh theme definition",
+  "description": "https://ohmyposh.dev/docs/configure",
+  "definitions": {
+    "color": {
+      "type": "string",
+      "pattern": "^(#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})|black|red|green|yellow|blue|magenta|cyan|white|default|darkGray|lightRed|lightGreen|lightYellow|lightBlue|lightMagenta|lightCyan|lightWhite)$",
+      "title": "Color string",
+      "description": "https://ohmyposh.dev/docs/configure#colors"
+    }
+  },
+  "required": ["blocks"],
+  "properties": {
+    "final_space": {
+      "$id": "#/properties/final_space",
+      "type": "boolean",
+      "title": "The final_space schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": true
+    },
+    "console_title": {
+      "$id": "#/properties/console_title",
+      "type": "boolean",
+      "title": "The console_title schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": true
+    },
+    "console_title_style": {
+      "$id": "#/properties/console_title_style",
+      "type": "string",
+      "title": "The console_title_style schema",
+      "description": "An explanation about the purpose of this instance.",
+      "enum": ["folder", "path"],
+      "default": "folder"
+    },
+    "blocks": {
+      "type": "array",
+      "title": "Block array",
+      "default": [],
+      "description": "https://ohmyposh.dev/docs/configure",
+      "items": {
+        "type": "object",
+        "title": "Block definition, contains 1 or more segments to render.",
+        "description": "https://ohmyposh.dev/docs/configure#block",
+        "required": ["type", "alignment", "segments"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Block type",
+            "description": "https://ohmyposh.dev/docs/configure#type",
+            "enum": ["prompt", "newline"],
+            "default": "prompt"
+          },
+          "alignment": {
+            "type": "string",
+            "title": "Block alignment",
+            "description": "https://ohmyposh.dev/docs/configure#alignment",
+            "enum": ["left", "right"],
+            "default": "left"
+          },
+          "vertical_offset": {
+            "type": "integer",
+            "title": "Block vertical offset",
+            "description": "https://ohmyposh.dev/docs/configure#vertical-offset"
+          },
+          "horizontal-offset": {
+            "type": "integer",
+            "title": "Block vertical offset",
+            "description": "https://ohmyposh.dev/docs/configure#horizontal-offset"
+          },
+          "segments": {
+            "type": "array",
+            "title": "Segments list, prompt elements to display based on context",
+            "description": "https://ohmyposh.dev/docs/configure#segment",
+            "default": [],
+            "items": {
+              "type": "object",
+              "title": "A segment",
+              "description": "https://ohmyposh.dev/docs/configure#segment",
+              "default": {},
+              "required": ["type", "style", "foreground", "background"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "title": "Segment Type",
+                  "enum": [
+                    "session",
+                    "path",
+                    "git",
+                    "exit",
+                    "python",
+                    "root",
+                    "time",
+                    "text",
+                    "command",
+                    "battery",
+                    "spotify",
+                    "shell",
+                    "node",
+                    "os",
+                    "envvar",
+                    "az",
+                    "kubectl",
+                    "dotnet",
+                    "terraform",
+                    "go",
+                    "julia"
+                  ]
+                },
+                "style": {
+                  "type": "string",
+                  "title": "Segment Style",
+                  "description": "https://ohmyposh.dev/docs/configure#style",
+                  "enum": ["powerline", "plain", "diamond"]
+                },
+                "foreground": { "$ref": "#/definitions/color" },
+                "background": { "$ref": "#/definitions/color" },
+                "properties": {
+                  "type": "object",
+                  "title": "Segment Properties, used to change behavior/displaying",
+                  "description": "https://ohmyposh.dev/docs/configure#properties",
+                  "default": {},
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "title": "Text prefix",
+                      "description": "https://ohmyposh.dev/docs/configure#prefix",
+                      "default": " "
+                    },
+                    "postfix": {
+                      "type": "string",
+                      "title": "Text postfix",
+                      "description": "https://ohmyposh.dev/docs/configure#postfix",
+                      "default": " "
+                    },
+                    "ignore_folders": {
+                      "type": "array",
+                      "title": "Ignore rendering in these folders",
+                      "description": "https://ohmyposh.dev/docs/configure#ignore-folders",
+                      "default": [],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "style": { "const": "powerline" }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "powerline_symbol": {
+                        "type": "string",
+                        "title": "Powerline Symbol",
+                        "description": "https://ohmyposh.dev/docs/configure#powerline-symbol",
+                        "default": "\uE0B0"
+                      },
+                      "invert_powerline": {
+                        "type": "boolean",
+                        "title": "Flip the Powerline symbol vertically",
+                        "description": "https://ohmyposh.dev/docs/configure#invert-powerline",
+                        "default": false
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "style": { "const": "diamond" }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "leading_diamond": {
+                        "type": "string",
+                        "title": "Leading diamond, used when \"style\"=\"diamond\"",
+                        "description": "https://ohmyposh.dev/docs/configure#leading-diamond",
+                        "default": ""
+                      },
+                      "trailing_diamond": {
+                        "type": "string",
+                        "title": "Trailing diamond, used when \"style\"=\"diamond\"",
+                        "description": "https://ohmyposh.dev/docs/configure#trailing-diamond",
+                        "default": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "type": { "const": "az" }
+                    }
+                  },
+                  "then": {
+                    "title": "Azure Segment",
+                    "description": "https://ohmyposh.dev/docs/az",
+                    "properties": {
+                      "properties": {
+                        "properties": {
+                          "display_id": { "type": "boolean", "default": false },
+                          "display_name": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "info_separator": {
+                            "type": "string",
+                            "default": " | "
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "type": { "const": "battery" }
+                    }
+                  },
+                  "then": {
+                    "title": "Battery Segment",
+                    "description": "https://ohmyposh.dev/docs/battery",
+                    "properties": {
+                      "properties": {
+                        "properties": {
+                          "battery_icon": { "type": "string", "default": "" },
+                          "display_error": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "charging_icon": {
+                            "type": "string",
+                            "default": ""
+                          },
+                          "discharging_icon": {
+                            "type": "string",
+                            "default": ""
+                          },
+                          "charged_icon": {
+                            "type": "string",
+                            "default": ""
+                          },
+                          "color_background": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "charged_color": { "$ref": "#/definitions/color" },
+                          "charging_color": { "$ref": "#/definitions/color" },
+                          "discharging_color": { "$ref": "#/definitions/color" }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "type": { "const": "command" }
+                    }
+                  },
+                  "then": {
+                    "title": "Command Segment",
+                    "description": "https://ohmyposh.dev/docs/command",
+                    "properties": {
+                      "properties": {
+                        "properties": {
+                          "shell": { "type": "string", "default": "bash" },
+                          "command": {
+                            "type": "string",
+                            "default": "echo no command specified"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
